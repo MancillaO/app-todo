@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   // URL base de la API - aquí podrías integrar con variables de entorno
-  // const API_BASE_URL = 'http://localhost:3000'
-  const API_BASE_URL = 'https://api-task-b47r.onrender.com'
+  const API_BASE_URL = 'http://localhost:3000'
+  // const API_BASE_URL = 'https://api-task-b47r.onrender.com'
 
   // Función para construir URLs específicas de la API
   function getApiUrl (endpoint = '/tasks', id = '') {
