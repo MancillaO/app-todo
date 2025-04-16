@@ -1,12 +1,25 @@
 {
-  "name": "task-web",
+  "name": "web-task",
   "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "main": "app.js",
+  "type": "module",
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "@eslint/js": "^9.23.0",
+    "eslint": "^8.57.1",
+    "eslint-config-standard": "^17.1.0",
+    "globals": "^16.0.0",
+    "standard": "^17.1.2",
+    "typescript-eslint": "^8.29.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "standard"
+    ]
+  },
   "description": ""
 }
