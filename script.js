@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   // URL base de la API - aquí podrías integrar con variables de entorno
-  const API_BASE_URL = 'http://localhost:3000'
+  // const API_BASE_URL = 'http://localhost:3000'
+  const API_BASE_URL = 'https://api-task-b47r.onrender.com'
 
   // Función para construir URLs específicas de la API
   function getApiUrl (endpoint = '/tasks', id = '') {
@@ -45,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
           const row = document.createElement('tr')
 
           // Determinar si la tarea está completada
-          const isCompleted = task.status === 'completada'
+          const isCompleted = task.status === 'Completada'
 
           row.innerHTML = `
             <td><input type="checkbox" class="task-status" ${isCompleted ? 'checked' : ''}></td>
@@ -86,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
           // Evento para el checkbox de estado
           const statusCheckbox = row.querySelector('.task-status')
           statusCheckbox.addEventListener('change', function () {
-            updateTaskStatus(task._id, this.checked ? 'completada' : 'pendiente')
+            updateTaskStatus(task._id, this.checked ? 'Completada' : 'Pendiente')
 
             // Actualizar estilo visual
             if (this.checked) {
@@ -159,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (taskData) {
       document.getElementById('taskTitle').value = taskData.title || ''
       document.getElementById('taskDescription').value = taskData.description || ''
-      document.getElementById('taskStatus').value = taskData.completed ? 'completed' : 'pending'
+      document.getElementById('taskStatus').value = taskData.completed ? 'Completada' : 'Pendiente'
 
       // Si tiene ID, estamos editando una tarea existente
       if (taskData.id) {
@@ -208,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (editingTaskId) {
       // Si estamos editando, enviamos un PUT/PATCH
       fetch(getApiUrl('/tasks', editingTaskId), {
-        method: 'PUT', // O PATCH, dependiendo de tu API
+        method: 'PATCH', // O PATCH, dependiendo de tu API
         headers: {
           'Content-Type': 'application/json'
         },
