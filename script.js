@@ -54,10 +54,10 @@ document.addEventListener('DOMContentLoaded', function () {
             <button class="options-button"><i class="bi bi-three-dots"></i></button>
             <div class="actions-menu">
               <div class="action-item edit-action">
-                <i class="bi bi-pencil"></i> Editar
+                <i class="bi bi-pencil"></i> Edit
               </div>
               <div class="action-item delete-action">
-                <i class="bi bi-trash"></i> Cancelar
+                <i class="bi bi-trash"></i> Delete
               </div>
             </div>
           </td>
