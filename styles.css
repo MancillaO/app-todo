@@ -310,6 +310,20 @@ select.form-control {
 
 .delete-action {
   color: #e74c3c;
+  transition: all ease .3s;
+}
+
+.edit-action{
+  transition: all ease .3s;
+}
+
+.delete-action:hover{
+  background-color: #e74c3c;
+  color: white;
+}
+.edit-action:hover {
+  background: var(--primary-color);
+  color: #fff;
 }
 
 .action-item i {
