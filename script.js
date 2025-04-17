@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   // URL base de la API - aquí podrías integrar con variables de entorno
-  // const API_BASE_URL = 'http://localhost:3000'
-  const API_BASE_URL = 'https://api-task-b47r.onrender.com'
+  const API_BASE_URL = 'http://localhost:3000'
+  // const API_BASE_URL = 'https://api-task-b47r.onrender.com'
 
   // Función para construir URLs específicas de la API
   function getApiUrl (endpoint = '/tasks', id = '') {
@@ -30,8 +30,6 @@ document.addEventListener('DOMContentLoaded', function () {
     fetch(apiUrl)
       .then(response => {
         if (!response.ok) {
-          console.log('')
-
           throw new Error('Error en la respuesta de la API')
         }
         return response.json()
@@ -49,16 +47,21 @@ document.addEventListener('DOMContentLoaded', function () {
           const isCompleted = task.status === 'Completada'
 
           row.innerHTML = `
-            <td><input type="checkbox" class="task-status" ${isCompleted ? 'checked' : ''}></td>
-            <td>${task.title}</td>
-            <td>${task.description || ''}</td>
-            <td class="action-buttons">
-              <button class="edit-button">Editar</button>
-            </td>
-            <td>
-              <button class="delete-button">Eliminar</button>
-            </td>
-          `
+          <td><input type="checkbox" class="task-status" ${isCompleted ? 'checked' : ''}></td>
+          <td>${task.title}</td>
+          <td>${task.description || ''}</td>
+          <td class="actions-cell">
+            <button class="options-button"><i class="bi bi-three-dots"></i></button>
+            <div class="actions-menu">
+              <div class="action-item edit-action">
+                <i class="bi bi-pencil"></i> Editar
+              </div>
+              <div class="action-item delete-action">
+                <i class="bi bi-trash"></i> Cancelar
+              </div>
+            </div>
+          </td>
+        `
 
           tableBody.appendChild(row)
 
@@ -66,19 +69,39 @@ document.addEventListener('DOMContentLoaded', function () {
             row.style.color = '#7f8c8d'
           }
 
-          // Asignar eventos a los botones de la nueva fila
-          const editButton = row.querySelector('.edit-button')
-          editButton.addEventListener('click', function () {
+          const optionsButton = row.querySelector('.options-button')
+          const actionsMenu = row.querySelector('.actions-menu')
+
+          optionsButton.addEventListener('click', function (e) {
+            e.stopPropagation()
+
+            // Cerrar todos los demás menús abiertos primero
+            document.querySelectorAll('.actions-menu.active').forEach(menu => {
+              if (menu !== actionsMenu) {
+                menu.classList.remove('active')
+              }
+            })
+
+            // Alternar el menú actual
+            actionsMenu.classList.toggle('active')
+          })
+
+          // Evento para editar
+          const editAction = row.querySelector('.edit-action')
+          editAction.addEventListener('click', function () {
+            actionsMenu.classList.remove('active')
             openModal('Editar Tarea', {
               title: task.title,
               description: task.description || '',
               completed: isCompleted,
-              id: task._id // Guardar el ID para poder actualizar la tarea
+              id: task._id
             })
           })
 
-          const deleteButton = row.querySelector('.delete-button')
-          deleteButton.addEventListener('click', function () {
+          // Evento para eliminar
+          const deleteAction = row.querySelector('.delete-action')
+          deleteAction.addEventListener('click', function () {
+            actionsMenu.classList.remove('active')
             if (window.confirm('¿Estás seguro de que deseas eliminar esta tarea?')) {
               deleteTask(task._id)
             }
@@ -105,6 +128,13 @@ document.addEventListener('DOMContentLoaded', function () {
         window.alert('No se pudieron cargar las tareas. Por favor, intenta de nuevo más tarde.')
       })
   }
+
+  // Evento para cerrar menús al hacer clic en cualquier parte del documento
+  document.addEventListener('click', function () {
+    document.querySelectorAll('.actions-menu.active').forEach(menu => {
+      menu.classList.remove('active')
+    })
+  })
 
   // Función para eliminar una tarea
   function deleteTask (taskId) {
