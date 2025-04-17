@@ -27,17 +27,40 @@
     </div>
 
     <!-- Tabla de tareas -->
-    <table class="task-table">
-      <thead>
-        <tr>
-          <th>Estatus</th>
-          <th>Titulo</th>
-          <th>Descripción</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <div class="table-container">
+      <table class="task-table">
+        <thead>
+          <tr>
+            <th>Estatus</th>
+            <th>Titulo</th>
+            <th>Descripción</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <!-- Estado de carga -->
+      <div class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>Cargando tareas...</p>
+      </div>
+
+      <!-- Mensaje de no resultados -->
+      <div class="no-results" style="display: none;">
+        <i class="bi bi-search"></i>
+        <p>No se encontraron tareas que coincidan con tu búsqueda</p>
+      </div>
+
+      <!-- Mensaje de no tareas -->
+      <div class="no-tasks" style="display: none;">
+        <i class="bi bi-clipboard-x"></i>
+        <p>No hay tareas registradas</p>
+        <button class="add-task-empty" id="btnAddTaskEmpty">
+          <i class="bi bi-plus-lg"></i>Agregar una tarea
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- Modal para agregar/editar tarea -->
@@ -65,7 +88,9 @@
         </div>
         <div class="form-buttons">
           <button type="button" class="cancel-button" id="btnCancelTask"><i class="bi bi-x-circle"></i>Cancelar</button>
-          <button type="submit" class="save-button"><i class="bi bi-check-circle"></i>Guardar</button>
+          <button type="submit" class="save-button" id="btnSaveTask">
+            <i class="bi bi-check-circle"></i><span>Guardar</span>
+          </button>
         </div>
       </form>
     </div>

@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // URL base de la API - aquí podrías integrar con variables de entorno
-  // const API_BASE_URL = 'http://localhost:3000'
-  const API_BASE_URL = 'https://api-task-b47r.onrender.com'
+  // URL base de la API
+  const API_BASE_URL = 'http://localhost:3000'
+  // const API_BASE_URL = 'https://api-task-b47r.onrender.com'
 
   // Función para construir URLs específicas de la API
   function getApiUrl (endpoint = '/tasks', id = '') {
@@ -14,17 +14,64 @@ document.addEventListener('DOMContentLoaded', function () {
   // Referencias a elementos del DOM
   const modal = document.getElementById('taskModal')
   const btnAddTask = document.getElementById('btnAddTask')
+  const btnAddTaskEmpty = document.getElementById('btnAddTaskEmpty')
   const btnCloseModal = document.getElementById('btnCloseModal')
   const btnCancelTask = document.getElementById('btnCancelTask')
   const searchBar = document.querySelector('.search-bar input')
   const searchButton = document.querySelector('.search-bar button')
   const taskForm = document.getElementById('taskForm')
+  const saveButton = document.getElementById('btnSaveTask')
+
+  // Referencias a los estados de carga y mensajes
+  const loadingContainer = document.querySelector('.loading-container')
+  const noResultsMessage = document.querySelector('.no-results')
+  const noTasksMessage = document.querySelector('.no-tasks')
+  const tableBody = document.querySelector('.task-table tbody')
+  const taskTable = document.querySelector('.task-table')
 
   let editingTaskId = null
+
+  // Función para mostrar/ocultar el estado de carga
+  function toggleLoading (show) {
+    if (show) {
+      loadingContainer.style.display = 'flex'
+      taskTable.style.display = 'none'
+      noResultsMessage.style.display = 'none'
+      noTasksMessage.style.display = 'none'
+    } else {
+      loadingContainer.style.display = 'none'
+      taskTable.style.display = 'table'
+    }
+  }
+
+  // Función para mostrar/ocultar el mensaje de no resultados
+  function toggleNoResults (show) {
+    if (show) {
+      noResultsMessage.style.display = 'flex'
+      taskTable.style.display = 'none'
+    } else {
+      noResultsMessage.style.display = 'none'
+      taskTable.style.display = 'table'
+    }
+  }
+
+  // Función para mostrar/ocultar el mensaje de no tareas
+  function toggleNoTasks (show) {
+    if (show) {
+      noTasksMessage.style.display = 'flex'
+      taskTable.style.display = 'none'
+    } else {
+      noTasksMessage.style.display = 'none'
+      taskTable.style.display = 'table'
+    }
+  }
 
   // Función para cargar las tareas desde la API
   function loadTasksFromAPI () {
     const apiUrl = getApiUrl('/tasks')
+
+    // Mostrar estado de carga
+    toggleLoading(true)
 
     // Hacer la petición fetch
     fetch(apiUrl)
@@ -35,9 +82,17 @@ document.addEventListener('DOMContentLoaded', function () {
         return response.json()
       })
       .then(tasks => {
+        // Ocultar estado de carga
+        toggleLoading(false)
+
         // Limpiar tabla existente
-        const tableBody = document.querySelector('.task-table tbody')
         tableBody.innerHTML = ''
+
+        // Verificar si hay tareas
+        if (tasks.length === 0) {
+          toggleNoTasks(true)
+          return
+        }
 
         // Llenar la tabla con los datos de la API
         tasks.forEach(task => {
@@ -123,8 +178,9 @@ document.addEventListener('DOMContentLoaded', function () {
         })
       })
       .catch(error => {
+        // Ocultar estado de carga y mostrar mensaje de error
+        toggleLoading(false)
         console.error('Error al cargar tareas:', error)
-        // Opcional: mostrar mensaje de error al usuario
         window.alert('No se pudieron cargar las tareas. Por favor, intenta de nuevo más tarde.')
       })
   }
@@ -140,6 +196,9 @@ document.addEventListener('DOMContentLoaded', function () {
   function deleteTask (taskId) {
     const apiUrl = getApiUrl('/tasks', taskId)
 
+    // Mostrar estado de carga
+    toggleLoading(true)
+
     fetch(apiUrl, {
       method: 'DELETE',
       headers: {
@@ -153,12 +212,15 @@ document.addEventListener('DOMContentLoaded', function () {
         loadTasksFromAPI()
       })
       .catch(error => {
+        // Ocultar estado de carga
+        toggleLoading(false)
         console.error('Error al eliminar la tarea:', error)
         window.alert('No se pudo eliminar la tarea. Por favor, intenta de nuevo.')
       })
   }
 
   // Función para actualizar el estado de una tarea
+
   function updateTaskStatus (taskId, newStatus) {
     const apiUrl = getApiUrl('/tasks', taskId)
 
@@ -173,9 +235,15 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!response.ok) {
           throw new Error('Error al actualizar el estado de la tarea')
         }
+        return response.json() // Esperar a que se complete la promesa
+      })
+      .then(data => {
+      // Recargar todas las tareas para asegurar que tenemos los datos actualizados
+        loadTasksFromAPI()
       })
       .catch(error => {
         console.error('Error al actualizar la tarea:', error)
+        window.alert('No se pudo actualizar el estado de la tarea. Por favor, intenta de nuevo.')
       })
   }
 
@@ -207,12 +275,30 @@ document.addEventListener('DOMContentLoaded', function () {
   // Función para cerrar el modal
   function closeModal () {
     modal.classList.remove('active')
+    // Asegurarse de quitar la clase loading del botón de guardar
+    saveButton.classList.remove('loading')
+  }
+
+  // Función para mostrar/ocultar el estado de carga en el botón de guardar
+  function toggleSaveButtonLoading (show) {
+    if (show) {
+      saveButton.classList.add('loading')
+    } else {
+      saveButton.classList.remove('loading')
+    }
   }
 
   // Manejador de eventos para abrir modal para nueva tarea
   btnAddTask.addEventListener('click', function () {
     openModal('Nueva Tarea')
   })
+
+  // También permitir abrir el modal desde el mensaje de "no hay tareas"
+  if (btnAddTaskEmpty) {
+    btnAddTaskEmpty.addEventListener('click', function () {
+      openModal('Nueva Tarea')
+    })
+  }
 
   // Manejadores de eventos para cerrar el modal
   btnCloseModal.addEventListener('click', closeModal)
@@ -229,6 +315,9 @@ document.addEventListener('DOMContentLoaded', function () {
   taskForm.addEventListener('submit', function (e) {
     e.preventDefault()
 
+    // Mostrar estado de carga en el botón
+    toggleSaveButtonLoading(true)
+
     // Obtener valores del formulario
     const taskData = {
       title: document.getElementById('taskTitle').value,
@@ -237,9 +326,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (editingTaskId) {
-      // Si estamos editando, enviamos un PUT/PATCH
+      // Si estamos editando, enviamos un PATCH
       fetch(getApiUrl('/tasks', editingTaskId), {
-        method: 'PATCH', // O PATCH, dependiendo de tu API
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -254,6 +343,7 @@ document.addEventListener('DOMContentLoaded', function () {
           editingTaskId = null
         })
         .catch(error => {
+          toggleSaveButtonLoading(false)
           console.error('Error al actualizar la tarea:', error)
           window.alert('No se pudo actualizar la tarea. Por favor, intenta de nuevo.')
         })
@@ -275,6 +365,7 @@ document.addEventListener('DOMContentLoaded', function () {
           loadTasksFromAPI()
         })
         .catch(error => {
+          toggleSaveButtonLoading(false)
           console.error('Error al crear la tarea:', error)
           window.alert('No se pudo crear la tarea. Por favor, intenta de nuevo.')
         })
@@ -298,6 +389,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Función para filtrar tareas en la tabla según término de búsqueda
   function searchTasks (searchTerm) {
     const rows = document.querySelectorAll('.task-table tbody tr')
+    let matchFound = false
 
     rows.forEach(row => {
       const title = row.cells[1].textContent.toLowerCase()
@@ -305,11 +397,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (title.includes(searchTerm) || description.includes(searchTerm)) {
         row.style.display = ''
+        matchFound = true
       } else {
         row.style.display = 'none'
       }
     })
+
+    // Mostrar mensaje si no hay resultados
+    if (!matchFound && searchTerm) {
+      toggleNoResults(true)
+    } else {
+      toggleNoResults(false)
+    }
   }
 
+  // Iniciar carga de tareas al cargar la página
   loadTasksFromAPI()
 })
