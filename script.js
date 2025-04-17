@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Función para abrir el modal
-  function openModal (title = 'Nueva Tarea', taskData = null) {
+  function openModal (title = 'New Task', taskData = null) {
     document.getElementById('modalTitle').textContent = title
 
     // Resetear el ID de edición
@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Manejador de eventos para abrir modal para nueva tarea
   btnAddTask.addEventListener('click', function () {
-    openModal('Nueva Tarea')
+    openModal('New Task')
   })
 
   // Manejadores de eventos para cerrar el modal
