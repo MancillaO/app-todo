@@ -54,10 +54,10 @@ document.addEventListener('DOMContentLoaded', function () {
             <button class="options-button"><i class="bi bi-three-dots"></i></button>
             <div class="actions-menu">
               <div class="action-item edit-action">
-                <i class="bi bi-pencil"></i> Edit
+                <i class="bi bi-pencil"></i> Editar
               </div>
               <div class="action-item delete-action">
-                <i class="bi bi-trash"></i> Delete
+                <i class="bi bi-trash"></i> Eliminar
               </div>
             </div>
           </td>
@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Función para abrir el modal
-  function openModal (title = 'New Task', taskData = null) {
+  function openModal (title = 'Nueva Tarea', taskData = null) {
     document.getElementById('modalTitle').textContent = title
 
     // Resetear el ID de edición
@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Manejador de eventos para abrir modal para nueva tarea
   btnAddTask.addEventListener('click', function () {
-    openModal('New Task')
+    openModal('Nueva Tarea')
   })
 
   // Manejadores de eventos para cerrar el modal

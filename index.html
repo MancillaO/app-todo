@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Administrador de Tareas</title>
+  <title>TaskManager</title>
   <link rel="icon" href="./images/favicon.webp">
   <link rel="stylesheet" href="./styles.css">
 </head>
@@ -20,19 +20,19 @@
     <!-- Sección de búsqueda y agregar -->
     <div class="search-section">
       <div class="search-bar">
-        <input type="text" placeholder="Search...">
+        <input type="text" placeholder="Buscar tarea...">
         <button><i class="bi bi-search"></i></button>
       </div>
-      <button class="add-button" id="btnAddTask"><i class="bi bi-plus-lg"></i>Add new task</button>
+      <button class="add-button" id="btnAddTask"><i class="bi bi-plus-lg"></i>Agregar tarea</button>
     </div>
 
     <!-- Tabla de tareas -->
     <table class="task-table">
       <thead>
         <tr>
-          <th>Status</th>
-          <th>Title</th>
-          <th>Description</th>
+          <th>Estatus</th>
+          <th>Titulo</th>
+          <th>Descripción</th>
           <th></th>
         </tr>
       </thead>
@@ -44,28 +44,28 @@
   <div class="modal" id="taskModal">
     <div class="modal-content">
       <div class="modal-header">
-        <h2 class="modal-title" id="modalTitle">New Task</h2>
+        <h2 class="modal-title" id="modalTitle"></h2>
         <button class="close-button" id="btnCloseModal">&times;</button>
       </div>
       <form id="taskForm">
         <div class="form-group">
-          <label for="taskTitle">Title</label>
+          <label for="taskTitle">Titulo</label>
           <input type="text" class="form-control" id="taskTitle" required>
         </div>
         <div class="form-group">
-          <label for="taskDescription">Description</label>
+          <label for="taskDescription">Descripción</label>
           <textarea class="form-control" id="taskDescription" required></textarea>
         </div>
         <div class="form-group">
-          <label for="taskStatus">Status</label>
+          <label for="taskStatus">Estatus</label>
           <select class="form-control" id="taskStatus">
-            <option value="Pendiente">Pending</option>
-            <option value="Completada">Completed</option>
+            <option value="Pendiente">Pendiente</option>
+            <option value="Completada">Completada</option>
           </select>
         </div>
         <div class="form-buttons">
-          <button type="button" class="cancel-button" id="btnCancelTask"><i class="bi bi-x-circle"></i>Cancel</button>
-          <button type="submit" class="save-button"><i class="bi bi-check-circle"></i>Save</button>
+          <button type="button" class="cancel-button" id="btnCancelTask"><i class="bi bi-x-circle"></i>Cancelar</button>
+          <button type="submit" class="save-button"><i class="bi bi-check-circle"></i>Guardar</button>
         </div>
       </form>
     </div>
