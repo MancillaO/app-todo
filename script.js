@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
               title: task.title,
               description: task.description || '',
               completed: isCompleted,
-              id: task._id
+              id: task._id || task.id
             })
           })
 
@@ -158,14 +158,14 @@ document.addEventListener('DOMContentLoaded', function () {
           deleteAction.addEventListener('click', function () {
             actionsMenu.classList.remove('active')
             if (window.confirm('¿Estás seguro de que deseas eliminar esta tarea?')) {
-              deleteTask(task._id)
+              deleteTask(task._id || task.id)
             }
           })
 
           // Evento para el checkbox de estado
           const statusCheckbox = row.querySelector('.task-status')
           statusCheckbox.addEventListener('change', function () {
-            updateTaskStatus(task._id, this.checked ? 'Completada' : 'Pendiente')
+            updateTaskStatus(task._id || task.id, this.checked ? 'Completada' : 'Pendiente')
 
             // Actualizar estilo visual
             if (this.checked) {
