@@ -1,5 +1,5 @@
 {
-  "name": "web-task",
+  "name": "to-do-app",
   "version": "1.0.0",
   "main": "app.js",
   "type": "module",
