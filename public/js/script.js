@@ -1,12 +1,31 @@
 import { API_BASE_URL } from '../js/config.js'
 
 document.addEventListener('DOMContentLoaded', function () {
+  // Verificar si existe el token, si no, redirigir al login
+  const authToken = getCookie('authToken')
+  const userId = getCookie('userId')
+  if (!authToken) {
+  // Eliminar ambas cookies antes de redirigir
+    document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+    document.cookie = 'userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+    window.location.href = './login.html'
+    return
+  }
+
   // Función para construir URLs específicas de la API
   function getApiUrl (endpoint = '/tasks', id = '') {
     if (id) {
       return `${API_BASE_URL}${endpoint}/${id}`
     }
     return `${API_BASE_URL}${endpoint}`
+  }
+
+  function getAuthHeaders () {
+    return {
+      'Content-Type': 'application/json',
+      token: authToken,
+      user_id: userId
+    }
   }
 
   // Referencias a elementos del DOM
@@ -47,9 +66,10 @@ document.addEventListener('DOMContentLoaded', function () {
     if (show) {
       noResultsMessage.style.display = 'flex'
       taskTable.style.display = 'none'
+      noTasksMessage.style.display = 'none' // Asegurar que el otro mensaje esté oculto
     } else {
       noResultsMessage.style.display = 'none'
-      taskTable.style.display = 'table'
+    // No mostramos automáticamente la tabla aquí, eso lo decide la función que llama
     }
   }
 
@@ -58,9 +78,10 @@ document.addEventListener('DOMContentLoaded', function () {
     if (show) {
       noTasksMessage.style.display = 'flex'
       taskTable.style.display = 'none'
+      noResultsMessage.style.display = 'none' // Asegurar que el otro mensaje esté oculto
     } else {
       noTasksMessage.style.display = 'none'
-      taskTable.style.display = 'table'
+    // No mostramos automáticamente la tabla aquí, eso lo decide la función que llama
     }
   }
 
@@ -71,50 +92,85 @@ document.addEventListener('DOMContentLoaded', function () {
     // Mostrar estado de carga
     toggleLoading(true)
 
-    // Hacer la petición fetch
-    fetch(apiUrl)
+    // Hacer la petición fetch con el token de autorización
+    fetch(apiUrl, {
+      headers: getAuthHeaders()
+    })
       .then(response => {
-        if (!response.ok) {
-          throw new Error('Error en la respuesta de la API')
+        if (response.status === 401) {
+          document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+          document.cookie = 'userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+          window.location.href = './login.html'
+          throw new Error('Sesión expirada o inválida')
         }
-        return response.json()
+        return response.json().then(data => {
+        // Primero verificamos si hay un mensaje "No tasks found"
+          if (data && data.message === 'No tasks found') {
+          // Este es un caso válido, no un error
+            return { noTasks: true, data }
+          }
+          // Si la respuesta no está OK y no es el mensaje esperado, es un error
+          if (!response.ok) {
+            throw new Error('Error en la respuesta de la API')
+          }
+          // Devolvemos los datos para el siguiente then
+          return { noTasks: false, data }
+        })
       })
-      .then(tasks => {
+      // En la parte de la función loadTasksFromAPI donde verificamos si no hay tareas:
+      .then(result => {
         // Ocultar estado de carga
         toggleLoading(false)
 
         // Limpiar tabla existente
         tableBody.innerHTML = ''
 
-        // Verificar si hay tareas
-        if (tasks.length === 0) {
-          toggleNoTasks(true)
+        // Si recibimos el mensaje de no tareas, mostramos la UI correspondiente
+        if (result.noTasks) {
+          toggleNoResults(false) // Asegurarse que el mensaje de búsqueda esté oculto
+          toggleNoTasks(true) // Mostrar mensaje de no tareas
           return
         }
 
+        const data = result.data
+
+        // Verificar si hay tareas (array vacío)
+        if (!Array.isArray(data) || data.length === 0) {
+          toggleNoResults(false) // Asegurarse que el mensaje de búsqueda esté oculto
+          toggleNoTasks(true) // Mostrar mensaje de no tareas
+          return
+        }
+
+        // Si llegamos aquí hay tareas, ocultar ambos mensajes y mostrar la tabla
+        toggleNoResults(false)
+        toggleNoTasks(false)
+        taskTable.style.display = 'table'
+
+        // El resto del código para llenar la tabla...
+
         // Llenar la tabla con los datos de la API
-        tasks.forEach(task => {
+        data.forEach(task => {
           const row = document.createElement('tr')
 
           // Determinar si la tarea está completada
           const isCompleted = task.status === 'Completada'
 
           row.innerHTML = `
-          <td><input type="checkbox" class="task-status" ${isCompleted ? 'checked' : ''}></td>
-          <td>${task.title}</td>
-          <td>${task.description || ''}</td>
-          <td class="actions-cell">
-            <button class="options-button"><i class="bi bi-three-dots"></i></button>
-            <div class="actions-menu">
-              <div class="action-item edit-action">
-                <i class="bi bi-pencil"></i> Editar
-              </div>
-              <div class="action-item delete-action">
-                <i class="bi bi-trash"></i> Eliminar
-              </div>
+        <td><input type="checkbox" class="task-status" ${isCompleted ? 'checked' : ''}></td>
+        <td>${task.title}</td>
+        <td>${task.description || ''}</td>
+        <td class="actions-cell">
+          <button class="options-button"><i class="bi bi-three-dots"></i></button>
+          <div class="actions-menu">
+            <div class="action-item edit-action">
+              <i class="bi bi-pencil"></i> Editar
             </div>
-          </td>
-        `
+            <div class="action-item delete-action">
+              <i class="bi bi-trash"></i> Eliminar
+            </div>
+          </div>
+        </td>
+      `
 
           tableBody.appendChild(row)
 
@@ -176,7 +232,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
       })
       .catch(error => {
-        // Ocultar estado de carga y mostrar mensaje de error
+      // Ocultar estado de carga y mostrar mensaje de error
         toggleLoading(false)
         console.error('Error al cargar tareas:', error)
         window.alert('No se pudieron cargar las tareas. Por favor, intenta de nuevo más tarde.')
@@ -199,11 +255,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     fetch(apiUrl, {
       method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      headers: getAuthHeaders()
     })
       .then(response => {
+        if (response.status === 401) {
+          document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+          document.cookie = 'userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+          window.location.href = './login.html'
+          throw new Error('Sesión expirada o inválida')
+        }
         if (!response.ok) {
           throw new Error('Error al eliminar la tarea')
         }
@@ -218,18 +278,22 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Función para actualizar el estado de una tarea
-
   function updateTaskStatus (taskId, newStatus) {
     const apiUrl = getApiUrl('/tasks', taskId)
 
     fetch(apiUrl, {
       method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: getAuthHeaders(),
       body: JSON.stringify({ status: newStatus })
     })
       .then(response => {
+        if (response.status === 401) {
+        // Eliminar ambas cookies
+          document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+          document.cookie = 'userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+          window.location.href = './login.html'
+          throw new Error('Sesión expirada o inválida')
+        }
         if (!response.ok) {
           throw new Error('Error al actualizar el estado de la tarea')
         }
@@ -327,12 +391,16 @@ document.addEventListener('DOMContentLoaded', function () {
       // Si estamos editando, enviamos un PATCH
       fetch(getApiUrl('/tasks', editingTaskId), {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(taskData)
       })
         .then(response => {
+          if (response.status === 401) {
+            // Token inválido o expirado, redirigir al login
+            document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+            window.location.href = './login.html'
+            throw new Error('Sesión expirada o inválida')
+          }
           if (!response.ok) {
             throw new Error('Error al actualizar la tarea')
           }
@@ -349,12 +417,20 @@ document.addEventListener('DOMContentLoaded', function () {
       // Si es una nueva tarea, enviamos un POST
       fetch(getApiUrl('/tasks'), {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(taskData)
+        headers: getAuthHeaders(),
+        body: JSON.stringify({
+          ...taskData,
+          userId: parseInt(userId) || userId // Convertir a número si es posible
+        })
       })
         .then(response => {
+          if (response.status === 401) {
+            // Token inválido o expirado, redirigir al login
+            document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+            document.cookie = 'userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+            window.location.href = './login.html'
+            throw new Error('Sesión expirada o inválida')
+          }
           if (!response.ok) {
             throw new Error('Error al crear la tarea')
           }
@@ -386,6 +462,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Función para filtrar tareas en la tabla según término de búsqueda
   function searchTasks (searchTerm) {
+  // Si no hay tareas en la tabla (está oculta y noTasks visible),
+  // pero estamos buscando algo, debemos mostrar el mensaje de no resultados en lugar de no tareas
+    if (taskTable.style.display === 'none' && noTasksMessage.style.display === 'flex' && searchTerm) {
+      toggleNoTasks(false)
+      toggleNoResults(true)
+      return
+    }
+
+    // Si no hay término de búsqueda y no hay tareas, volvemos a mostrar el mensaje original
+    if (!searchTerm && noResultsMessage.style.display === 'flex') {
+      toggleNoResults(false)
+      // Verificamos si realmente no hay tareas cargadas
+      const hasRows = tableBody.querySelectorAll('tr').length > 0
+      if (!hasRows) {
+        toggleNoTasks(true)
+      } else {
+      // Si hay filas, mostrar la tabla
+        taskTable.style.display = 'table'
+      }
+      return
+    }
+
+    // Búsqueda normal cuando hay tareas en la tabla
     const rows = document.querySelectorAll('.task-table tbody tr')
     let matchFound = false
 
@@ -401,12 +500,42 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     })
 
-    // Mostrar mensaje si no hay resultados
+    // Mostrar mensaje apropiado según resultados de búsqueda
     if (!matchFound && searchTerm) {
-      toggleNoResults(true)
-    } else {
+      toggleNoTasks(false) // Ocultar mensaje de no tareas si estaba visible
+      toggleNoResults(true) // Mostrar mensaje de no coincidencias
+    } else if (matchFound) {
+      toggleNoResults(false) // Ocultar mensaje de no coincidencias
+      toggleNoTasks(false) // Ocultar mensaje de no tareas
+      taskTable.style.display = 'table' // Mostrar la tabla con las coincidencias
+    } else if (!searchTerm) {
+    // Si no hay término de búsqueda, restablecer vista normal
       toggleNoResults(false)
+
+      // Si no hay tareas, mostrar ese mensaje
+      if (rows.length === 0) {
+        toggleNoTasks(true)
+      } else {
+        taskTable.style.display = 'table'
+      }
     }
+  }
+
+  // Función auxiliar para obtener una cookie por su nombre
+  function getCookie (name) {
+    const cookieArr = document.cookie.split(';')
+
+    for (let i = 0; i < cookieArr.length; i++) {
+      const cookiePair = cookieArr[i].split('=')
+      const cookieName = cookiePair[0].trim()
+
+      if (cookieName === name) {
+        return decodeURIComponent(cookiePair[1])
+      }
+    }
+
+    // Si no se encuentra la cookie, devolver null
+    return null
   }
 
   // Iniciar carga de tareas al cargar la página
