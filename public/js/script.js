@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '../../config.js'
+import { API_BASE_URL } from '../js/config.js'
 
 document.addEventListener('DOMContentLoaded', function () {
   // Función para construir URLs específicas de la API
