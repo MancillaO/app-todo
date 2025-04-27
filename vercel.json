@@ -1,6 +1,6 @@
 {
   "routes": [
-    { "src": "/", "dest": "/public/pages/index.html" },
+    { "src": "/", "dest": "public/pages/index.html" },
     { "handle": "filesystem" }
   ]
 }
