@@ -72,7 +72,9 @@ document.addEventListener('DOMContentLoaded', function () {
     toggleLoading(true)
 
     // Hacer la petición fetch
+    console.log(apiUrl)
     fetch(apiUrl)
+
       .then(response => {
         if (!response.ok) {
           throw new Error('Error en la respuesta de la API')
@@ -85,6 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Limpiar tabla existente
         tableBody.innerHTML = ''
+        console.log(tasks)
 
         // Verificar si hay tareas
         if (tasks.length === 0) {
