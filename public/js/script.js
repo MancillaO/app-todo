@@ -1,8 +1,6 @@
-document.addEventListener('DOMContentLoaded', function () {
-  // URL base de la API
-  // const API_BASE_URL = 'http://localhost:3000'
-  const API_BASE_URL = 'https://to-do-api-sjv7.onrender.com'
+import { API_BASE_URL } from '../../config.js'
 
+document.addEventListener('DOMContentLoaded', function () {
   // Función para construir URLs específicas de la API
   function getApiUrl (endpoint = '/tasks', id = '') {
     if (id) {

@@ -1,25 +1,23 @@
 {
   "name": "to-do-app",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "index.js",
   "type": "module",
-  "scripts": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+
+  "description": "",
   "devDependencies": {
-    "@eslint/js": "^9.23.0",
-    "eslint": "^8.57.1",
     "eslint-config-standard": "^17.1.0",
-    "globals": "^16.0.0",
-    "standard": "^17.1.2",
-    "typescript-eslint": "^8.29.0"
+    "standard": "^17.1.2"
   },
   "eslintConfig": {
     "extends": [
       "standard"
     ]
-  },
-  "description": ""
+  }
 }
