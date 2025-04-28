@@ -5,11 +5,60 @@ document.addEventListener('DOMContentLoaded', function () {
   const authToken = getCookie('authToken')
   const userId = getCookie('userId')
   if (!authToken) {
-  // Eliminar ambas cookies antes de redirigir
+    // Eliminar ambas cookies antes de redirigir
     document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
     document.cookie = 'userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
     window.location.href = './login.html'
     return
+  }
+
+  // Funcionalidad para el menú de hamburguesa - CÓDIGO CORREGIDO: eliminado DOMContentLoaded anidado
+  const hamburgerButton = document.getElementById('hamburgerButton')
+  const menu = document.getElementById('menu')
+
+  // Verificar que los elementos existen antes de agregar event listeners
+  if (hamburgerButton && menu) {
+    // Abrir/cerrar el menú al hacer clic en el botón
+    hamburgerButton.addEventListener('click', function () {
+      this.classList.toggle('hamburger-active')
+      menu.classList.toggle('active')
+    })
+
+    // Cerrar el menú al hacer clic fuera de él
+    document.addEventListener('click', function (event) {
+      if (!hamburgerButton.contains(event.target) && !menu.contains(event.target)) {
+        hamburgerButton.classList.remove('hamburger-active')
+        menu.classList.remove('active')
+      }
+    })
+
+    // Ejemplos de funcionalidad para las opciones del menú
+    const profileLink = menu.querySelector('a:first-child')
+    const logoutLink = menu.querySelector('a.logout')
+
+    if (profileLink) {
+      profileLink.addEventListener('click', function (e) {
+        e.preventDefault()
+        console.log('Dirigiendo al perfil del usuario')
+        // Aquí iría la lógica para ir al perfil
+      })
+    }
+
+    if (logoutLink) {
+      logoutLink.addEventListener('click', function (e) {
+        e.preventDefault()
+        logout()
+      })
+    }
+  }
+
+  function logout () {
+    // Eliminar cookies de autenticación
+    document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+    document.cookie = 'userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+
+    // Redirigir al usuario a la página de login
+    window.location.href = './login.html'
   }
 
   // Función para construir URLs específicas de la API

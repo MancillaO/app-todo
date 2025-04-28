@@ -42,6 +42,129 @@ header h1 {
   font-size: 2rem;
 }
 
+/* Estilos para el menú de hamburguesa */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--spacing);
+  width: 100%;
+}
+
+/* Contenedor del menú de hamburguesa */
+.hamburger-container {
+  position: relative;
+}
+
+/* Botón de hamburguesa */
+.hamburger-button {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius);
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.hamburger-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Las tres líneas del menú hamburguesa */
+.hamburger-button span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: var(--text-color);
+  margin: 2px 0;
+  transition: all 0.3s ease;
+}
+
+/* Menú desplegable */
+.menu {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  width: 200px;
+  background-color: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+/* Cuando se activa el menú */
+.menu.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Elementos del menú */
+.menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu ul li {
+  padding: 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.menu ul li:last-child {
+  border-bottom: none;
+}
+
+.menu ul li a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--text-color);
+  padding: 12px 15px;
+  transition: background-color 0.2s;
+}
+
+.menu ul li a:hover {
+  background-color: var(--light-bg);
+}
+
+.menu ul li a i {
+  margin-right: 10px;
+  font-size: 1.1rem;
+}
+
+/* Transformación del botón cuando está activo */
+.hamburger-active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Opción de cerrar sesión en rojo */
+.menu ul li a.logout {
+  color: #e74c3c;
+}
+
+.menu ul li a.logout:hover {
+  background-color: #e74c3c;
+  color: white;
+}
+
 /* Container principal - Grid layout */
 .container {
   max-width: 1200px;
