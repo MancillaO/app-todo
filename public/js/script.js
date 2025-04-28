@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Cerrar otros menús...
 
             // En lugar de cambiar directamente top y left, usa una transformación
-            actionsMenu.style.transform = 'translate(-80%, 5px)'
+            actionsMenu.style.transform = 'translate(-80%)'
 
             // Alternar el menú
             actionsMenu.classList.toggle('active')
