@@ -57,11 +57,9 @@ document.addEventListener('DOMContentLoaded', function () {
     document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
     document.cookie = 'userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
 
-    // Redirigir al usuario a la página de login
     window.location.href = './login.html'
   }
 
-  // Función para construir URLs específicas de la API
   function getApiUrl (endpoint = '/tasks', id = '') {
     if (id) {
       return `${API_BASE_URL}${endpoint}/${id}`
@@ -549,19 +547,16 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     })
 
-    // Mostrar mensaje apropiado según resultados de búsqueda
     if (!matchFound && searchTerm) {
-      toggleNoTasks(false) // Ocultar mensaje de no tareas si estaba visible
-      toggleNoResults(true) // Mostrar mensaje de no coincidencias
+      toggleNoTasks(false)
+      toggleNoResults(true)
     } else if (matchFound) {
-      toggleNoResults(false) // Ocultar mensaje de no coincidencias
-      toggleNoTasks(false) // Ocultar mensaje de no tareas
-      taskTable.style.display = 'table' // Mostrar la tabla con las coincidencias
+      toggleNoResults(false)
+      toggleNoTasks(false)
+      taskTable.style.display = 'table'
     } else if (!searchTerm) {
-    // Si no hay término de búsqueda, restablecer vista normal
       toggleNoResults(false)
 
-      // Si no hay tareas, mostrar ese mensaje
       if (rows.length === 0) {
         toggleNoTasks(true)
       } else {
@@ -582,11 +577,8 @@ document.addEventListener('DOMContentLoaded', function () {
         return decodeURIComponent(cookiePair[1])
       }
     }
-
-    // Si no se encuentra la cookie, devolver null
     return null
   }
 
-  // Iniciar carga de tareas al cargar la página
   loadTasksFromAPI()
 })
