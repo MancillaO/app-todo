@@ -385,6 +385,7 @@ select.form-control {
 /* Estilos para el menú de acciones */
 .actions-cell {
   position: relative;
+  overflow: visible;
 }
 
 .options-button {

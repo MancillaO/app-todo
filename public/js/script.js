@@ -228,17 +228,17 @@ document.addEventListener('DOMContentLoaded', function () {
           const optionsButton = row.querySelector('.options-button')
           const actionsMenu = row.querySelector('.actions-menu')
 
+          // En el evento click del botón de opciones, añade esto:
+          // En el evento click
           optionsButton.addEventListener('click', function (e) {
             e.stopPropagation()
 
-            // Cerrar todos los demás menús abiertos primero
-            document.querySelectorAll('.actions-menu.active').forEach(menu => {
-              if (menu !== actionsMenu) {
-                menu.classList.remove('active')
-              }
-            })
+            // Cerrar otros menús...
 
-            // Alternar el menú actual
+            // En lugar de cambiar directamente top y left, usa una transformación
+            actionsMenu.style.transform = 'translate(-80%, 5px)'
+
+            // Alternar el menú
             actionsMenu.classList.toggle('active')
           })
 
