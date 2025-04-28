@@ -17,20 +17,29 @@
     <form class="login-form" action="/registro" method="POST">
       <h2>Nuevo Usuario</h2>
 
+      <!-- Campo Usuario -->
       <div class="form-group">
         <i class="fas fa-user icon"></i>
-        <input type="text" name="usuario" placeholder="Nombre de Usuario" required>
+        <input type="text" name="usuario" placeholder="Nombre de Usuario" required pattern="[A-Za-z0-9_.-]+"
+          maxlength="50" title="Solo se permiten letras, números y los caracteres: _, -, ."
+          oninput="this.value = this.value.replace(/[^A-Za-z0-9_.-]/g, '')">
+        <span class="error-message" id="username-error"></span>
       </div>
 
+      <!-- Campo Email -->
       <div class="form-group">
         <i class="fas fa-envelope icon"></i>
-        <input type="email" name="email" placeholder="Correo Electrónico" required>
+        <input type="email" name="email" placeholder="Correo Electrónico" required maxlength="100">
+        <span class="error-message" id="email-error"></span>
       </div>
 
+      <!-- Campo Contraseña -->
       <div class="form-group">
         <i class="fas fa-lock icon"></i>
-        <input type="password" name="contrasena" id="password" placeholder="Contraseña" required minlength="8">
+        <input type="password" name="contrasena" id="password" placeholder="Contraseña" required minlength="8"
+          maxlength="100">
         <i class="toggle-password" id="togglePassword"></i>
+        <span class="error-message" id="password-error"></span>
       </div>
 
       <button type="submit" class="btn">Registrarse</button>
