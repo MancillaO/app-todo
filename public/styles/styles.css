@@ -45,7 +45,7 @@ body {
   left: 18px;
   top: 50%;
   transform: translateY(-50%);
-  color: #4285f4;
+  color: #3772d1;
   font-size: 20px;
 }
 
@@ -75,7 +75,7 @@ body {
   padding: 14px;
   border: none;
   border-radius: 12px;
-  background: #4285f4;
+  background: #3772d1;
   color: #fff;
   font-size: 16px;
   font-weight: bold;
@@ -110,7 +110,7 @@ body {
 
 .signup-text,
 .login-text {
-  color: #4285f4;
+  color: #3772d1;
   font-weight: bold;
   text-decoration: none;
   transition: color 0.3s ease, transform 0.3s ease;
@@ -127,7 +127,7 @@ body {
 }
 
 .forgot-password a {
-  color: #4285f4;
+  color: #3772d1;
 }
 
 .toggle-password {
@@ -139,7 +139,7 @@ body {
   height: 20px;
   cursor: pointer;
   background: transparent;
-  border: 2px solid #4285f4;
+  border: 2px solid #3772d1;
   border-radius: 50%;
   transition: all 0.3s ease;
   box-sizing: border-box;
@@ -154,7 +154,7 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  border: 2px solid #4285f4;
+  border: 2px solid #3772d1;
   background-color: transparent;
 }
 
@@ -166,7 +166,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(45deg);
-  background: #4285f4;
+  background: #3772d1;
   opacity: 1;
 }
 
