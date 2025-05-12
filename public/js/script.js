@@ -1,4 +1,5 @@
 import { API_BASE_URL } from '../js/config.js'
+import { sortTasks } from '../utils/sortTasks.js'
 
 document.addEventListener('DOMContentLoaded', function () {
   // Verificar si existe el token, si no, redirigir al login
@@ -196,7 +197,8 @@ document.addEventListener('DOMContentLoaded', function () {
         // El resto del código para llenar la tabla...
 
         // Llenar la tabla con los datos de la API
-        data.forEach(task => {
+        const sortedTasks = sortTasks(data)
+        sortedTasks.forEach(task => {
           const row = document.createElement('tr')
 
           // Determinar si la tarea está completada
