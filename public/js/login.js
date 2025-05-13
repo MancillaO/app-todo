@@ -1,8 +1,6 @@
 import { API_BASE_URL } from './config.js'
 
 document.addEventListener('DOMContentLoaded', function () {
-  console.log('DOM fully loaded and parsed')
-
   checkExistingSession()
 
   const togglePassword = document.getElementById('togglePassword')
