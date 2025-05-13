@@ -18,7 +18,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: system-ui;
 }
 
 body {
@@ -31,7 +31,7 @@ body {
 
 /* Header */
 header {
-  text-transform: capitalize;
+  text-transform: capitalize; 
   text-align: center;
   padding: var(--spacing);
   box-shadow: var(--shadow);
@@ -259,6 +259,18 @@ button:hover {
 
 .task-table tbody tr:last-child td {
   border-bottom: none;
+}
+
+.footer{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.3rem 0;
+}
+
+.footer p{
+  color: #7a7a7a;
 }
 
 /* Checkbox personalizado */

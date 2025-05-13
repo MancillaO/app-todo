@@ -1,5 +1,4 @@
-// Asegúrate de tener este archivo o ajustar la ruta de importación
-import { API_BASE_URL } from './config.js' // Ajusta la ruta si es necesario
+import { API_BASE_URL } from './config.js'
 
 console.log(API_BASE_URL)
 
@@ -107,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function () {
           errorContainer.textContent = error.message || 'Ocurrió un error. Por favor, inténtalo de nuevo.'
 
           const formTitle = registerForm.querySelector('h2')
-          // Insertar después del título (o donde prefieras)
           if (formTitle) {
             registerForm.insertBefore(errorContainer, formTitle.nextElementSibling)
           } else {
