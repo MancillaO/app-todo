@@ -1,25 +1,20 @@
-import { API_BASE_URL } from '../js/config.js'
+import { API_BASE_URL } from './config.js'
 import { sortTasks } from '../utils/sortTasks.js'
 
 document.addEventListener('DOMContentLoaded', function () {
-  // Verificar si existe el token, si no, redirigir al login
   const authToken = getCookie('authToken')
   const userId = getCookie('userId')
   if (!authToken) {
-    // Eliminar ambas cookies antes de redirigir
     document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
     document.cookie = 'userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
     window.location.href = './login.html'
     return
   }
 
-  // Funcionalidad para el menú de hamburguesa - CÓDIGO CORREGIDO: eliminado DOMContentLoaded anidado
   const hamburgerButton = document.getElementById('hamburgerButton')
   const menu = document.getElementById('menu')
 
-  // Verificar que los elementos existen antes de agregar event listeners
   if (hamburgerButton && menu) {
-    // Abrir/cerrar el menú al hacer clic en el botón
     hamburgerButton.addEventListener('click', function () {
       this.classList.toggle('hamburger-active')
       menu.classList.toggle('active')
@@ -33,7 +28,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     })
 
-    // Ejemplos de funcionalidad para las opciones del menú
     const profileLink = menu.querySelector('a:first-child')
     const logoutLink = menu.querySelector('a.logout')
 
@@ -54,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function logout () {
-    // Eliminar cookies de autenticación
     document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
     document.cookie = 'userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
 
@@ -76,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // Referencias a elementos del DOM
   const modal = document.getElementById('taskModal')
   const btnAddTask = document.getElementById('btnAddTask')
   const btnAddTaskEmpty = document.getElementById('btnAddTaskEmpty')
@@ -87,7 +79,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const taskForm = document.getElementById('taskForm')
   const saveButton = document.getElementById('btnSaveTask')
 
-  // Referencias a los estados de carga y mensajes
   const loadingContainer = document.querySelector('.loading-container')
   const noResultsMessage = document.querySelector('.no-results')
   const noTasksMessage = document.querySelector('.no-tasks')
@@ -96,7 +87,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let editingTaskId = null
 
-  // Función para mostrar/ocultar el estado de carga
   function toggleLoading (show) {
     if (show) {
       loadingContainer.style.display = 'flex'
@@ -109,38 +99,31 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // Función para mostrar/ocultar el mensaje de no resultados
   function toggleNoResults (show) {
     if (show) {
       noResultsMessage.style.display = 'flex'
       taskTable.style.display = 'none'
-      noTasksMessage.style.display = 'none' // Asegurar que el otro mensaje esté oculto
+      noTasksMessage.style.display = 'none'
     } else {
       noResultsMessage.style.display = 'none'
-    // No mostramos automáticamente la tabla aquí, eso lo decide la función que llama
     }
   }
 
-  // Función para mostrar/ocultar el mensaje de no tareas
   function toggleNoTasks (show) {
     if (show) {
       noTasksMessage.style.display = 'flex'
       taskTable.style.display = 'none'
-      noResultsMessage.style.display = 'none' // Asegurar que el otro mensaje esté oculto
+      noResultsMessage.style.display = 'none'
     } else {
       noTasksMessage.style.display = 'none'
-    // No mostramos automáticamente la tabla aquí, eso lo decide la función que llama
     }
   }
 
-  // Función para cargar las tareas desde la API
   function loadTasksFromAPI () {
     const apiUrl = getApiUrl('/tasks')
 
-    // Mostrar estado de carga
     toggleLoading(true)
 
-    // Hacer la petición fetch con el token de autorización
     fetch(apiUrl, {
       headers: getAuthHeaders()
     })
@@ -152,56 +135,42 @@ document.addEventListener('DOMContentLoaded', function () {
           throw new Error('Sesión expirada o inválida')
         }
         return response.json().then(data => {
-        // Primero verificamos si hay un mensaje "No tasks found"
           if (data && data.message === 'No tasks found') {
-          // Este es un caso válido, no un error
             return { noTasks: true, data }
           }
-          // Si la respuesta no está OK y no es el mensaje esperado, es un error
           if (!response.ok) {
             throw new Error('Error en la respuesta de la API')
           }
-          // Devolvemos los datos para el siguiente then
           return { noTasks: false, data }
         })
       })
-      // En la parte de la función loadTasksFromAPI donde verificamos si no hay tareas:
       .then(result => {
-        // Ocultar estado de carga
         toggleLoading(false)
 
-        // Limpiar tabla existente
         tableBody.innerHTML = ''
 
-        // Si recibimos el mensaje de no tareas, mostramos la UI correspondiente
         if (result.noTasks) {
-          toggleNoResults(false) // Asegurarse que el mensaje de búsqueda esté oculto
-          toggleNoTasks(true) // Mostrar mensaje de no tareas
+          toggleNoResults(false)
+          toggleNoTasks(true)
           return
         }
 
         const data = result.data
 
-        // Verificar si hay tareas (array vacío)
         if (!Array.isArray(data) || data.length === 0) {
-          toggleNoResults(false) // Asegurarse que el mensaje de búsqueda esté oculto
-          toggleNoTasks(true) // Mostrar mensaje de no tareas
+          toggleNoResults(false)
+          toggleNoTasks(true)
           return
         }
 
-        // Si llegamos aquí hay tareas, ocultar ambos mensajes y mostrar la tabla
         toggleNoResults(false)
         toggleNoTasks(false)
         taskTable.style.display = 'table'
 
-        // El resto del código para llenar la tabla...
-
-        // Llenar la tabla con los datos de la API
         const sortedTasks = sortTasks(data)
         sortedTasks.forEach(task => {
           const row = document.createElement('tr')
 
-          // Determinar si la tarea está completada
           const isCompleted = task.status === 'Completada'
 
           row.innerHTML = `
@@ -230,21 +199,13 @@ document.addEventListener('DOMContentLoaded', function () {
           const optionsButton = row.querySelector('.options-button')
           const actionsMenu = row.querySelector('.actions-menu')
 
-          // En el evento click del botón de opciones, añade esto:
-          // En el evento click
           optionsButton.addEventListener('click', function (e) {
             e.stopPropagation()
 
-            // Cerrar otros menús...
-
-            // En lugar de cambiar directamente top y left, usa una transformación
             actionsMenu.style.transform = 'translate(-80%)'
-
-            // Alternar el menú
             actionsMenu.classList.toggle('active')
           })
 
-          // Evento para editar
           const editAction = row.querySelector('.edit-action')
           editAction.addEventListener('click', function () {
             actionsMenu.classList.remove('active')
@@ -256,7 +217,6 @@ document.addEventListener('DOMContentLoaded', function () {
             })
           })
 
-          // Evento para eliminar
           const deleteAction = row.querySelector('.delete-action')
           deleteAction.addEventListener('click', function () {
             actionsMenu.classList.remove('active')
@@ -265,12 +225,10 @@ document.addEventListener('DOMContentLoaded', function () {
             }
           })
 
-          // Evento para el checkbox de estado
           const statusCheckbox = row.querySelector('.task-status')
           statusCheckbox.addEventListener('change', function () {
             updateTaskStatus(task._id || task.id, this.checked ? 'Completada' : 'Pendiente')
 
-            // Actualizar estilo visual
             if (this.checked) {
               row.style.color = '#7f8c8d'
             } else {
@@ -281,25 +239,20 @@ document.addEventListener('DOMContentLoaded', function () {
         })
       })
       .catch(error => {
-      // Ocultar estado de carga y mostrar mensaje de error
         toggleLoading(false)
         console.error('Error al cargar tareas:', error)
         window.alert('No se pudieron cargar las tareas. Por favor, intenta de nuevo más tarde.')
       })
   }
 
-  // Evento para cerrar menús al hacer clic en cualquier parte del documento
   document.addEventListener('click', function () {
     document.querySelectorAll('.actions-menu.active').forEach(menu => {
       menu.classList.remove('active')
     })
   })
 
-  // Función para eliminar una tarea
   function deleteTask (taskId) {
     const apiUrl = getApiUrl('/tasks', taskId)
-
-    // Mostrar estado de carga
     toggleLoading(true)
 
     fetch(apiUrl, {
@@ -319,14 +272,12 @@ document.addEventListener('DOMContentLoaded', function () {
         loadTasksFromAPI()
       })
       .catch(error => {
-        // Ocultar estado de carga
         toggleLoading(false)
         console.error('Error al eliminar la tarea:', error)
         window.alert('No se pudo eliminar la tarea. Por favor, intenta de nuevo.')
       })
   }
 
-  // Función para actualizar el estado de una tarea
   function updateTaskStatus (taskId, newStatus) {
     const apiUrl = getApiUrl('/tasks', taskId)
 
@@ -346,10 +297,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!response.ok) {
           throw new Error('Error al actualizar el estado de la tarea')
         }
-        return response.json() // Esperar a que se complete la promesa
+        return response.json()
       })
       .then(data => {
-      // Recargar todas las tareas para asegurar que tenemos los datos actualizados
         loadTasksFromAPI()
       })
       .catch(error => {
@@ -358,39 +308,31 @@ document.addEventListener('DOMContentLoaded', function () {
       })
   }
 
-  // Función para abrir el modal
   function openModal (title = 'Nueva Tarea', taskData = null) {
     document.getElementById('modalTitle').textContent = title
 
-    // Resetear el ID de edición
     editingTaskId = null
 
-    // Si hay datos de tarea, llenar el formulario
     if (taskData) {
       document.getElementById('taskTitle').value = taskData.title || ''
       document.getElementById('taskDescription').value = taskData.description || ''
       document.getElementById('taskStatus').value = taskData.completed ? 'Completada' : 'Pendiente'
 
-      // Si tiene ID, estamos editando una tarea existente
       if (taskData.id) {
         editingTaskId = taskData.id
       }
     } else {
-      // Limpiar el formulario
       taskForm.reset()
     }
 
     modal.classList.add('active')
   }
 
-  // Función para cerrar el modal
   function closeModal () {
     modal.classList.remove('active')
-    // Asegurarse de quitar la clase loading del botón de guardar
     saveButton.classList.remove('loading')
   }
 
-  // Función para mostrar/ocultar el estado de carga en el botón de guardar
   function toggleSaveButtonLoading (show) {
     if (show) {
       saveButton.classList.add('loading')
@@ -399,37 +341,30 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // Manejador de eventos para abrir modal para nueva tarea
   btnAddTask.addEventListener('click', function () {
     openModal('Nueva Tarea')
   })
 
-  // También permitir abrir el modal desde el mensaje de "no hay tareas"
   if (btnAddTaskEmpty) {
     btnAddTaskEmpty.addEventListener('click', function () {
       openModal('Nueva Tarea')
     })
   }
 
-  // Manejadores de eventos para cerrar el modal
   btnCloseModal.addEventListener('click', closeModal)
   btnCancelTask.addEventListener('click', closeModal)
 
-  // Cerrar el modal al hacer clic fuera del contenido
   modal.addEventListener('click', function (e) {
     if (e.target === modal) {
       closeModal()
     }
   })
 
-  // Prevenir envío del formulario y procesarlo
   taskForm.addEventListener('submit', function (e) {
     e.preventDefault()
 
-    // Mostrar estado de carga en el botón
     toggleSaveButtonLoading(true)
 
-    // Obtener valores del formulario
     const taskData = {
       title: document.getElementById('taskTitle').value,
       description: document.getElementById('taskDescription').value,
@@ -437,7 +372,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (editingTaskId) {
-      // Si estamos editando, enviamos un PATCH
       fetch(getApiUrl('/tasks', editingTaskId), {
         method: 'PATCH',
         headers: getAuthHeaders(),
@@ -445,7 +379,6 @@ document.addEventListener('DOMContentLoaded', function () {
       })
         .then(response => {
           if (response.status === 401) {
-            // Token inválido o expirado, redirigir al login
             document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
             window.location.href = './login.html'
             throw new Error('Sesión expirada o inválida')
@@ -463,18 +396,16 @@ document.addEventListener('DOMContentLoaded', function () {
           window.alert('No se pudo actualizar la tarea. Por favor, intenta de nuevo.')
         })
     } else {
-      // Si es una nueva tarea, enviamos un POST
       fetch(getApiUrl('/tasks'), {
         method: 'POST',
         headers: getAuthHeaders(),
         body: JSON.stringify({
           ...taskData,
-          userId: parseInt(userId) || userId // Convertir a número si es posible
+          userId: parseInt(userId) || userId
         })
       })
         .then(response => {
           if (response.status === 401) {
-            // Token inválido o expirado, redirigir al login
             document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
             document.cookie = 'userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
             window.location.href = './login.html'
@@ -484,7 +415,6 @@ document.addEventListener('DOMContentLoaded', function () {
             throw new Error('Error al crear la tarea')
           }
           closeModal()
-          // Recargar las tareas para incluir la nueva
           loadTasksFromAPI()
         })
         .catch(error => {
@@ -495,13 +425,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   })
 
-  // Funcionalidad de búsqueda
   searchButton.addEventListener('click', function () {
     const searchTerm = searchBar.value.toLowerCase()
     searchTasks(searchTerm)
   })
 
-  // También realizar búsqueda al presionar Enter
   searchBar.addEventListener('keyup', function (e) {
     if (e.key === 'Enter') {
       const searchTerm = searchBar.value.toLowerCase()
@@ -509,31 +437,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   })
 
-  // Función para filtrar tareas en la tabla según término de búsqueda
   function searchTasks (searchTerm) {
-  // Si no hay tareas en la tabla (está oculta y noTasks visible),
-  // pero estamos buscando algo, debemos mostrar el mensaje de no resultados en lugar de no tareas
     if (taskTable.style.display === 'none' && noTasksMessage.style.display === 'flex' && searchTerm) {
       toggleNoTasks(false)
       toggleNoResults(true)
       return
     }
 
-    // Si no hay término de búsqueda y no hay tareas, volvemos a mostrar el mensaje original
     if (!searchTerm && noResultsMessage.style.display === 'flex') {
       toggleNoResults(false)
-      // Verificamos si realmente no hay tareas cargadas
       const hasRows = tableBody.querySelectorAll('tr').length > 0
       if (!hasRows) {
         toggleNoTasks(true)
       } else {
-      // Si hay filas, mostrar la tabla
         taskTable.style.display = 'table'
       }
       return
     }
 
-    // Búsqueda normal cuando hay tareas en la tabla
     const rows = document.querySelectorAll('.task-table tbody tr')
     let matchFound = false
 
@@ -567,7 +488,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // Función auxiliar para obtener una cookie por su nombre
   function getCookie (name) {
     const cookieArr = document.cookie.split(';')
 
@@ -581,6 +501,5 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     return null
   }
-
   loadTasksFromAPI()
 })
