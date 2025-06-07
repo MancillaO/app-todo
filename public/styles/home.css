@@ -31,16 +31,26 @@ body {
 
 /* Header */
 header {
-  text-transform: capitalize; 
   text-align: center;
   padding: var(--spacing);
   box-shadow: var(--shadow);
   width: 100%;
 }
 
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo img{
+  width: 2rem;
+}
+
 header h1 {
   margin: 0;
-  font-size: 2rem;
+  font-size: 1.4rem;
+  font-weight: 500;
 }
 
 /* Estilos para el menú de hamburguesa */
