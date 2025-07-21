@@ -241,9 +241,11 @@ body {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -319,30 +321,30 @@ body {
   .landing-header {
     padding: 12px 15px;
   }
-  
+
   .logo h1 {
     font-size: 1.3rem;
   }
-  
+
   .logo img {
     width: 1.7rem;
   }
-  
+
   .btn-outline {
     padding: 5px 10px;
     font-size: 0.8rem;
   }
-  
+
   .hero h2 {
     font-size: 1.7rem;
     margin-bottom: 15px;
   }
-  
+
   .hero p {
     font-size: 0.95rem;
     margin-bottom: 25px;
   }
-  
+
   .nav-links {
     gap: 8px;
   }
