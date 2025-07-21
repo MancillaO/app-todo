@@ -19,6 +19,8 @@
 }
 
 body {
+  max-width: 1440px;
+  margin: 0 auto;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -160,12 +162,13 @@ body {
 }
 
 .logo img {
-  width: 2.2rem;
+  width: 2rem;
 }
 
 .logo h1 {
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 700;
+  color: #2b79b8;
 }
 
 .nav-links {
@@ -176,14 +179,15 @@ body {
 .btn-link,
 .btn-outline,
 .btn-primary {
-  padding: 10px 20px;
+  padding: 8px 16px;
   border-radius: var(--radius);
   font-weight: 500;
   text-decoration: none;
   transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  font-size: 1rem;
 }
 
 .btn-link {
@@ -225,6 +229,24 @@ body {
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 20px;
+  background: linear-gradient(90deg, #0d2c4a, #1a4b8c, #2b5a9c);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: gradient 5s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .hero p {
@@ -238,8 +260,8 @@ body {
 .cta .btn-primary {
   background-color: var(--primary-color);
   color: #fff;
-  padding: 14px 28px;
-  font-size: 1.1rem;
+  padding: 10px 22px;
+  font-size: 1rem;
   font-weight: 600;
   box-shadow: var(--shadow);
 }
@@ -248,6 +270,82 @@ body {
   background-color: var(--primary-hover);
   transform: translateY(-3px);
   box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .landing-header {
+    padding: 15px 20px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .nav-links {
+    width: auto;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+  }
+
+  .register-btn {
+    display: none !important;
+  }
+
+  .btn-outline {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    margin-left: 8px;
+  }
+
+  .hero h2 {
+    font-size: 2rem;
+    padding: 0 15px;
+  }
+
+  .hero p {
+    font-size: 1rem;
+    padding: 0 15px;
+  }
+
+  .cta .btn-primary {
+    padding: 8px 18px;
+    font-size: 0.95rem;
+  }
+}
+
+/* Estilos para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .landing-header {
+    padding: 12px 15px;
+  }
+  
+  .logo h1 {
+    font-size: 1.3rem;
+  }
+  
+  .logo img {
+    width: 1.7rem;
+  }
+  
+  .btn-outline {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+  }
+  
+  .hero h2 {
+    font-size: 1.7rem;
+    margin-bottom: 15px;
+  }
+  
+  .hero p {
+    font-size: 0.95rem;
+    margin-bottom: 25px;
+  }
+  
+  .nav-links {
+    gap: 8px;
+  }
 }
 
 .footer {
