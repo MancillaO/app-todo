@@ -228,7 +228,7 @@ body {
 .hero h2 {
   font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   background: linear-gradient(90deg, #0d2c4a, #1a4b8c, #2b5a9c);
   -webkit-background-clip: text;
   background-clip: text;
