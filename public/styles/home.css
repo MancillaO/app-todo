@@ -43,7 +43,7 @@ header {
   gap: 1rem;
 }
 
-.logo img{
+.logo img {
   width: 2rem;
 }
 
@@ -271,7 +271,7 @@ button:hover {
   border-bottom: none;
 }
 
-.footer{
+.footer {
   width: 80%;
   margin: 0 auto;
   display: flex;
@@ -280,7 +280,7 @@ button:hover {
   padding: 1.3rem 0;
 }
 
-.footer p{
+.footer p {
   text-align: center;
   color: #7a7a7a;
 }
