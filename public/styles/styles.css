@@ -72,7 +72,6 @@ body {
 }
 
 .btn {
-  /* hereda padding y colores de base.css */
   width: 100%;
   padding: 10px 22px;
   border: none;

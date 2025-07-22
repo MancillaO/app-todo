@@ -17,7 +17,6 @@
     <form class="login-form" action="/login" method="POST">
       <h2>Iniciar Sesión</h2>
 
-      <!-- Campo Usuario -->
       <div class="form-group">
         <i class="fas fa-user icon"></i>
         <input type="text" name="usuario" placeholder="Nombre de Usuario" required pattern="[A-Za-z0-9_.-]+"
@@ -26,7 +25,6 @@
         <span class="error-message" id="username-error"></span>
       </div>
 
-      <!-- Campo Contraseña -->
       <div class="form-group">
         <i class="fas fa-lock icon"></i>
         <input type="password" name="contrasena" id="password" placeholder="Contraseña" required minlength="8"
@@ -36,9 +34,6 @@
       </div>
 
       <button type="submit" class="btn">Iniciar Sesión</button>
-
-      <!-- Enlace para recuperación de contraseña -->
-      <!-- <p class="forgot-password"><a href="/recuperar_contrasena">¿Olvidaste tu contraseña?</a></p> -->
 
       <div class="signup-link">
         <p>¿No tienes cuenta? <a href="./register.html" class="signup-text">¡Crea una aquí!</a></p>

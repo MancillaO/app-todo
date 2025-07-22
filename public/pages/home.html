@@ -11,15 +11,13 @@
 </head>
 
 <body>
-  <!-- Header -->
   <header>
     <div class="header-container">
       <div class="logo">
-        <img src="../assets/images/logo.webp" alt="Logo">
+        <img src="../assets/images/logo.webp" alt="Logo Donly">
         <h1>Donly</h1>
       </div>
 
-      <!-- Menú de hamburguesa -->
       <div class="hamburger-container">
         <div class="hamburger-button" id="hamburgerButton">
           <span></span>
@@ -28,7 +26,6 @@
         </div>
         <div class="menu" id="menu">
           <ul>
-            <!-- <li><a href="#"><i class="bi bi-person-circle"></i>Mi perfil</a></li> -->
             <li><a href="#" class="logout"><i class="bi bi-box-arrow-right"></i>Cerrar sesión</a></li>
           </ul>
         </div>
@@ -36,9 +33,7 @@
     </div>
   </header>
 
-  <!-- Contenido principal -->
   <div class="container">
-    <!-- Sección de búsqueda y agregar -->
     <div class="search-section">
       <div class="search-bar">
         <input type="text" placeholder="Buscar tarea...">
@@ -47,7 +42,6 @@
       <button class="add-button" id="btnAddTask"><i class="bi bi-plus-lg"></i>Nueva tarea</button>
     </div>
 
-    <!-- Tabla de tareas -->
     <div class="table-container">
       <table class="task-table">
         <thead>
@@ -61,19 +55,15 @@
         <tbody></tbody>
       </table>
 
-      <!-- Estado de carga -->
       <div class="loading-container">
         <div class="loading-spinner"></div>
         <p>Cargando tareas...</p>
       </div>
-
-      <!-- Mensaje de no resultados -->
       <div class="no-results" style="display: none;">
         <i class="bi bi-search"></i>
         <p>No se encontraron tareas que coincidan con tu búsqueda</p>
       </div>
 
-      <!-- Mensaje de no tareas -->
       <div class="no-tasks" style="display: none;">
         <i class="bi bi-clipboard-x"></i>
         <p>No hay tareas registradas</p>
@@ -86,7 +76,6 @@
     <p>&copy; 2025 Donly - Proyecto de Portafolio</p>
   </footer>
 
-  <!-- Modal para agregar/editar tarea -->
   <div class="modal" id="taskModal">
     <div class="modal-content">
       <div class="modal-header">
