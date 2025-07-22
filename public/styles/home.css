@@ -1,4 +1,3 @@
-/* Reset y estilos generales */
 * {
   margin: 0;
   padding: 0;
@@ -14,7 +13,6 @@ body {
   margin: 0;
 }
 
-/* Header */
 header {
   text-align: center;
   padding: var(--spacing);
@@ -38,7 +36,6 @@ header h1 {
   font-weight: 600;
 }
 
-/* Estilos para el menú de hamburguesa */
 .header-container {
   display: flex;
   justify-content: space-between;
@@ -49,12 +46,10 @@ header h1 {
   margin: 0 auto;
 }
 
-/* Contenedor del menú de hamburguesa */
 .hamburger-container {
   position: relative;
 }
 
-/* Botón de hamburguesa */
 .hamburger-button {
   width: 40px;
   height: 40px;
@@ -72,7 +67,6 @@ header h1 {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-/* Las tres líneas del menú hamburguesa */
 .hamburger-button span {
   display: block;
   width: 25px;
@@ -82,7 +76,6 @@ header h1 {
   transition: all 0.3s ease;
 }
 
-/* Menú desplegable */
 .menu {
   position: absolute;
   top: 45px;
@@ -99,14 +92,12 @@ header h1 {
   z-index: 1000;
 }
 
-/* Cuando se activa el menú */
 .menu.active {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
 }
 
-/* Elementos del menú */
 .menu ul {
   list-style: none;
   padding: 0;
@@ -140,7 +131,6 @@ header h1 {
   font-size: 1.1rem;
 }
 
-/* Transformación del botón cuando está activo */
 .hamburger-active span:nth-child(1) {
   transform: rotate(45deg) translate(5px, 5px);
 }
@@ -153,7 +143,6 @@ header h1 {
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* Opción de cerrar sesión en rojo */
 .menu ul li a.logout {
   color: #e74c3c;
 }
@@ -163,7 +152,6 @@ header h1 {
   color: white;
 }
 
-/* Container principal - Grid layout */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -173,7 +161,6 @@ header h1 {
   gap: var(--spacing);
 }
 
-/* Sección de búsqueda */
 .search-section {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -222,7 +209,6 @@ button:hover {
   justify-self: end;
 }
 
-/* Tabla de tareas */
 .task-table {
   width: 100%;
   border-collapse: collapse;
@@ -270,14 +256,12 @@ button:hover {
   color: #7a7a7a;
 }
 
-/* Checkbox personalizado */
 .task-status {
   width: 18px;
   height: 18px;
   cursor: pointer;
 }
 
-/* Modal */
 .modal {
   display: none;
   position: fixed;
@@ -339,7 +323,6 @@ button:hover {
   background: none;
 }
 
-/* Formulario */
 .form-group {
   margin-bottom: 15px;
 }
@@ -391,7 +374,6 @@ select.form-control {
   margin-right: 8px;
 }
 
-/* Estilos para el menú de acciones */
 .actions-cell {
   position: relative;
   overflow: visible;
@@ -460,7 +442,6 @@ select.form-control {
   margin-right: 8px;
 }
 
-/* Estado de carga (Loading spinner) */
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -469,7 +450,6 @@ select.form-control {
   padding: 40px 0;
   text-align: center;
   display: none;
-  /* Oculto por defecto */
 }
 
 .loading-spinner {
@@ -492,7 +472,6 @@ select.form-control {
   }
 }
 
-/* Mensaje de no resultados */
 .no-results,
 .no-tasks {
   display: flex;
@@ -511,14 +490,12 @@ select.form-control {
   opacity: 0.5;
 }
 
-/* Contenedor de tabla para manejar estados */
 .table-container {
   background-color: var(--card-bg);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
 
-/* Estado de carga para botones */
 .save-button.loading {
   position: relative;
   pointer-events: none;
@@ -542,7 +519,6 @@ select.form-control {
   animation: spin 1s linear infinite;
 }
 
-/* Responsive styles */
 @media (max-width: 768px) {
   .search-section {
     grid-template-columns: 1fr;
