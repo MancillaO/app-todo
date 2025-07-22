@@ -342,9 +342,9 @@ body {
     width: 1.7rem;
   }
 
-  .btn-outline {
-    padding: 5px 10px;
-    font-size: 0.8rem;
+  .btn-link {
+    padding: 7px 12px;
+    font-size: 0.9rem;
   }
 
   .hero h2 {
