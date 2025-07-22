@@ -1,0 +1,88 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+
+:root {
+  --gradient-start: #a7c8eb;
+  --gradient-end: #ffffff;
+  --btn-text-color: #ffffff;
+  --placeholder-color: #95a5a6;
+  --input-bg: rgba(0,0,0,0.02);
+  --error-bg: rgba(231, 76, 60, 0.1);
+  --error-border: #e74c3c;
+  --error-text: #e74c3c;
+  --primary-color: #4285f4;
+  --primary-hover: #3367d6;
+  --light-bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text-color: #333333;
+  --border-color: #e0e0e0;
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --radius: 12px;
+  --spacing: 20px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-color: var(--light-bg);
+  color: var(--text-color);
+  line-height: 1.6;
+
+  &.blue-bg {
+    background-color: #e6eff8;
+  }
+}
+
+.btn,
+.btn-primary,
+.btn-outline {
+  padding: 10px 22px;
+  border-radius: var(--radius);
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary,
+.btn {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+}
+
+.btn-primary:hover,
+.btn:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+.btn-outline:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.shadow {
+  box-shadow: var(--shadow);
+}
+
+.radius {
+  border-radius: var(--radius);
+}
